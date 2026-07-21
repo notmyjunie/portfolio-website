@@ -21,130 +21,96 @@ body {
   min-height: 100vh;
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
-  /* Default body font family */
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   scrollbar-width: none;
 }
 
-
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none;
-  /* Hides WebKit scrollbar completely */
   width: 0;
   height: 0;
 }
 
 .main-container,
-.section-container {
+.section-container,
+.contact-section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
+}
+
+/* Ensure containers have explicit bottom padding and room to overflow cleanly */
+.main-container,
+.section-container,
+#about,
+#projects,
+#about-details {
+  box-sizing: border-box;
+  width: 100%;
+
+  /* Generous top & bottom padding so content never hits screen edges */
+  padding-top: 5rem;
+  padding-bottom: 6rem;
+  /* Extra room at the bottom for scroll breathing space */
+
+  /* Allows tall content to scroll inside snapped sections without clipping */
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+/* Specific spacing for hero section */
+.main-container#home {
+  /* Hero needs slightly less top padding for header offset */
+  padding-top: 3rem;
+  padding-bottom: 6rem;
+}
+
+/* ==========================================
+   MOBILE BOTTOM PADDING (CLEAR FLOATING NAV BAR)
+   ========================================== */
+@media (max-width: 600px) {
+
+  .main-container,
+  .section-container,
+  #projects,
+  #about-details {
+    padding-top: 3rem;
+    /* Pushes content 7rem above the screen bottom so nothing gets hidden behind 
+       the bottom floating pill nav bar or mobile gesture bar */
+    padding-bottom: 7.5rem;
+  }
+
+  #about {
+    padding-top: 3.5rem;
+    padding-bottom: 8.5rem;
+  }
+
+  .about-card {
+    padding: 1.5rem;
+    /* Keeps inner card padding compact on phones */
+    gap: 0.85rem;
+  }
+
+  #about-details {
+    padding-top: 3.5rem;
+    padding-bottom: 7.5rem;
+    /* Clears floating nav bar */
+  }
 }
 
 .main-container {
-  /* Restrict max width for clean line lengths */
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
-
-  /* Makes the container match the exact screen height */
   min-height: calc(100vh - 5rem);
-  /* Subtractions prevent overflow if top bar floats above */
-
-  /* Flexbox vertical & horizontal alignment */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Vertically centers name + role in screen middle */
   align-items: flex-start;
-  /* Keeps text left-aligned inside container */
   gap: 1.25rem;
-  /* Consistent spacing between title, subtitle, and badges */
 }
 
-/* ==========================================
-   HOMEPAGE & BEACH SECTION TRANSITIONS
-   ========================================== */
-
-/* Base main container styling */
-.main-container#home {
-  position: relative;
-  box-sizing: border-box;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-
-  /* Gradient mask that smoothly fades out the bottom edge into #about */
-  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-}
-
-/* Base section container defaults */
-.section-container {
-  min-height: 100vh;
-  min-height: 100svh;
-  width: 100%;
-  display: flex;
-  position: relative;
-  box-sizing: border-box;
-}
-
-/* ==========================================
-   2. ABOUT SECTION (BEACH GRADIENT OVERLAY)
-   ========================================== */
-/* ==========================================
-   ABOUT SECTION: BEACH + DARK MODE ADAPTATION
-   ========================================== */
-
-#about.beach-theme {
-  background-image:
-    /* Layer 1: Darkening tint to preserve text contrast in both modes */
-    linear-gradient(180deg,
-      rgba(0, 0, 0, 0.35) 0%,
-      rgba(0, 0, 0, 0.15) 100%),
-    /* Layer 2: Top transition blend from #home */
-    linear-gradient(180deg,
-      var(--md-sys-color-surface) 0%,
-      rgba(0, 0, 0, 0) 18%),
-    /* Layer 4: Beach image background */
-    url('../../public/beach.avif');
-
-  background-size: cover;
-  background-position: center bottom;
-  overflow: hidden;
-}
-
-/* Light Mode Card styling over Beach */
-#about.beach-theme .about-card {
-  background-color: rgba(244, 251, 251, 0.85) !important;
-  /* Semi-transparent Light Teal Slate surface */
-  color: #161d1d !important;
-  border: 1px solid rgba(111, 121, 121, 0.3);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
-/* Dark Mode Card styling over Beach */
-@media (prefers-color-scheme: dark) {
-  #about.beach-theme .about-card {
-    background-color: rgba(14, 20, 20, 0.82) !important;
-    /* Deep oceanic charcoal glass */
-    color: #dee4e3 !important;
-    /* Crisp light text for dark mode */
-    border: 1px solid rgba(136, 147, 147, 0.25);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-  }
-
-  /* Ensures secondary text inside the card flips cleanly */
-  #about.beach-theme .about-card p,
-  #about.beach-theme .about-card .bio-text {
-    color: #bec8c8 !important;
-    /* Light M3 on-surface-variant */
-  }
-}
-
-/* Modern mobile browser fix (handles dynamic URL address bars) */
 @supports (min-height: 100svh) {
   .main-container {
     min-height: calc(100svh - 5rem);
@@ -163,68 +129,354 @@ body::-webkit-scrollbar {
 }
 
 /* ==========================================
-   ABOUT SECTION STYLING (OPTION 2)
+   UNIFIED BASE SECTION CONTAINER
    ========================================== */
-
-#about {
-  /* Enforce full viewport height and snapping */
-  min-height: 100vh;
-  min-height: 100svh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  box-sizing: border-box;
-
-  /* Linear top-to-bottom background gradient */
-  background: linear-gradient(180deg,
-      var(--md-sys-color-surface, #fef7ff) 0%,
-      var(--md-sys-color-surface-container, #f3edf7) 100%);
-
-  /* Center the about-card vertically and horizontally */
+.section-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 6rem 1.5rem 2rem;
-  /* Clear header space at top */
-}
 
-/* Dark mode automatic adjustment */
-@media (prefers-color-scheme: dark) {
-  #about {
-    background: linear-gradient(180deg,
-        var(--md-sys-color-surface, #141218) 0%,
-        var(--md-sys-color-surface-container, #211f26) 100%);
-  }
-}
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
 
-/* Glassmorphic Container Card */
-.about-card {
-  max-width: 720px;
-  padding: 2.5rem;
-  border-radius: 28px;
-  /* M3 Extra Large shape */
-  background-color: rgb(from var(--md-sys-color-surface-container-high, #f3edf7) r g b / 60%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  /* Generous top & bottom clearance across ALL sections */
+  padding: 6rem 2rem;
+  box-sizing: border-box;
+
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
 }
 
 /* ==========================================
-   REPEATABLE ABOUT CARD SCROLL REVEAL
+   2. TYPOGRAPHY & HEADINGS (Google Sans Flex / Inter)
+   ========================================== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.display-large,
+.display-medium,
+.display-small {
+  font-family: var(--font-display);
+  color: var(--md-sys-color-on-surface);
+  letter-spacing: -0.02em;
+}
+
+h1,
+.display-large {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+
+h2,
+.display-medium {
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h3,
+.display-small {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+
+p,
+blockquote,
+li {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface-variant);
+  max-width: 62ch;
+  margin-bottom: 1.25rem;
+}
+
+p.lead {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+p:not(:last-child) {
+  margin-bottom: 1.25rem;
+}
+
+span {
+  font-family: var(--font-body);
+  color: inherit;
+}
+
+/* ==========================================
+   3. NAVIGATION (DUAL-PILL M3 NAVBAR)
+   ========================================== */
+.m3-nav-bar {
+  position: sticky;
+  top: 1rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: fit-content;
+  max-width: calc(100% - 2rem);
+  margin: 0 auto;
+  background: transparent;
+  padding: 0;
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+/* --- GLASS CAPSULES (Shared styling for Pill 1 and Pill 2) --- */
+.nav-home-pill,
+.nav-links {
+  background-color: rgb(from var(--md-sys-color-surface-container-high) r g b / 75%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgb(from var(--md-sys-color-outline-variant) r g b / 30%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Pill 1: Independent Floating Glass Capsule */
+.nav-home-pill {
+  padding: 0.75rem 0.85rem !important;
+  border-radius: 100% !important;
+}
+
+/* Pill 2: Nav Links Glass Capsule */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 100px;
+}
+
+/* --- SHARED LINK & ICON STYLING --- */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 20px;
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+/* Base Icon Styling */
+.nav-icon {
+  font-size: 1.125rem;
+  line-height: 1;
+  display: inline-block;
+  font-variation-settings: 'FILL' 0;
+  /* Default outlined state */
+  transition: font-variation-settings 0.2s ease;
+}
+
+/* Hover State for Unselected Links */
+.nav-link:hover:not(.active) {
+  color: var(--md-sys-color-on-surface);
+  background-color: rgb(from var(--md-sys-color-on-surface) r g b / 8%);
+}
+
+/* Toggles icon fill on hover */
+.nav-link:hover .nav-icon {
+  font-variation-settings: 'FILL' 1;
+}
+
+/* --- ACTIVE STATE (Shared for Home & Links) --- */
+.nav-link.active {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: 700;
+}
+
+/* Active Icon State */
+.nav-link.active .nav-icon {
+  font-variation-settings: 'FILL' 1;
+}
+
+/* Dark mode nav overides */
+@media (prefers-color-scheme: dark) {
+  .nav-links {
+    background-color: rgba(33, 31, 38, 0.6) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Mobile Floating Nav Bar */
+@media (max-width: 600px) {
+  .m3-nav-bar {
+    top: auto;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    position: fixed;
+    width: max-content;
+    z-index: 1000;
+  }
+
+  .nav-links {
+    padding: 0.25rem 0.375rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 0.875rem;
+  }
+
+  @supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .m3-nav-bar {
+      bottom: calc(1rem + env(safe-area-inset-bottom));
+    }
+  }
+
+  .main-container,
+  .section-container,
+  #about {
+    padding-top: 2rem;
+    padding-bottom: 5rem;
+  }
+
+  .nav-icon {
+    font-size: 1.125rem;
+    /* 18px clean proportion */
+    line-height: 1;
+    display: none;
+  }
+
+  .nav-link.active .nav-icon {
+    display: inline-block;
+    font-variation-settings: 'FILL' 1;
+  }
+
+}
+
+/* ==========================================
+   4. HERO SECTION & GLITCH EFFECT
+   ========================================== */
+.main-container#home {
+  position: relative;
+  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+.glitch-container {
+  position: relative;
+  display: inline-block;
+  min-height: 1.2em;
+}
+
+/* ==========================================
+   MATRIX DECODE HERO TEXT
    ========================================== */
 
+.matrix-text {
+  font-family: var(--font-display, monospace);
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  display: inline-block;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+
+
+/* ==========================================
+   5. ABOUT SECTION & BEACH GRADIENT
+   ========================================== */
+#about {
+  min-height: 100vh;
+  min-height: 100svh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  /* Top clearance for navbar, generous bottom padding for scroll space */
+  padding: 5rem 1.5rem 4rem;
+  box-sizing: border-box;
+}
+
+#about.beach-theme {
+  background-image:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.15) 100%),
+    linear-gradient(180deg, var(--md-sys-color-surface) 0%, rgba(0, 0, 0, 0) 18%),
+    url('../../public/beach.avif');
+  background-size: cover;
+  background-position: center bottom;
+  overflow: hidden;
+}
+
+.about-card {
+  max-width: 720px;
+  width: 100%;
+
+  padding: 2rem 2.25rem;
+
+  border-radius: 28px;
+  background-color: rgb(from var(--md-sys-color-surface-container-high) r g b / 60%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--md-sys-color-outline-variant);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* Slightly tighter internal gap */
+
+  /* Keeps card vertically centered on large screens while preventing overflow */
+  margin: auto 0;
+}
+
+#about.beach-theme .about-card {
+  background-color: rgba(244, 251, 251, 0.85) !important;
+  color: #161d1d !important;
+  border: 1px solid rgba(111, 121, 121, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+@media (prefers-color-scheme: dark) {
+  #about.beach-theme .about-card {
+    background-color: rgba(14, 20, 20, 0.82) !important;
+    color: #dee4e3 !important;
+    border: 1px solid rgba(136, 147, 147, 0.25);
+  }
+
+  #about.beach-theme .about-card p,
+  #about.beach-theme .about-card .bio-text {
+    color: #bec8c8 !important;
+  }
+}
+
+/* Scroll Reveal Animation */
 #about .about-card {
   opacity: 0;
   transform: translateY(45px);
-  /* Slightly lower start position for extra depth */
-
   will-change: opacity, transform;
-
-  /* Smooth M3 motion for both entrance and exit reset */
-  transition: opacity 1.6s cubic-bezier(0.2, 0, 0, 1),
+  transition: opacity 0.6s cubic-bezier(0.2, 0, 0, 1),
     transform 0.6s cubic-bezier(0.2, 0, 0, 1);
 }
 
@@ -246,612 +498,99 @@ body::-webkit-scrollbar {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-primary);
 }
 
-.about-card h2 {
-  font-size: 1.75rem;
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--md-sys-color-on-surface, #1d1b20);
-  margin: 0;
-}
-
-.about-body {
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: var(--md-sys-color-on-surface-variant, #49454f);
-  margin: 0;
-}
-
-/* Skill / Focus Chips */
-.tech-highlights h3 {
-  font-size: 0.938rem;
-  font-weight: 600;
-  color: var(--md-sys-color-on-surface, #1d1b20);
-  margin: 1rem 0 0.75rem 0;
-}
-
+/* Chips */
 .chip-group {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-/* Skill / Focus Chips with dynamic dark/light mode support */
-.m3-chip {
-  padding: 0.375rem 0.875rem;
-  border-radius: 8px;
-  /* M3 Small shape */
+/* Restore spacing above the chip section heading */
+.tech-highlights h3 {
+  font-size: 0.938rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin: 1.25rem 0 0.75rem 0;
+  /* Creates breathing space above the chips */
+}
 
-  /* Use dynamic surface container tokens */
+/* Restore row wrapping and flex gap between individual chips */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  /* Space between individual chips (10px) */
+  margin-top: 0.5rem;
+}
+
+/* Base M3 Chip Styling */
+.m3-chip {
+  padding: 0.4rem 0.875rem;
+  /* Generous inner padding */
+  border-radius: 8px;
   background-color: var(--md-sys-color-surface-container-highest);
   color: var(--md-sys-color-on-surface-variant);
   border: 1px solid var(--md-sys-color-outline-variant);
-
   font-size: 0.875rem;
   font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-/* Fallback for dark mode if variables aren't set globally */
-@media (prefers-color-scheme: dark) {
-  .m3-chip {
-    background-color: var(--md-sys-color-surface-container-highest, #36343b);
-    color: var(--md-sys-color-on-surface-variant, #cac4d0);
-    border-color: var(--md-sys-color-outline-variant, #49454f);
-  }
-}
-
-/* ==========================================
-   2. DISPLAY & HEADINGS (Google Sans Flex)
-   ========================================== */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.display-large,
-.display-medium,
-.display-small {
-  font-family: var(--font-display);
-  color: var(--md-sys-color-on-surface);
-  letter-spacing: -0.02em;
-}
-
-h1,
-.display-large {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 700;
-  /* Extra Bold for M3 Expressive Hero */
-  line-height: 1.1;
-  margin-bottom: 1.25rem;
-}
-
-h2,
-.display-medium {
-  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-  font-weight: 600;
   line-height: 1.2;
-  margin-bottom: 1rem;
-}
-
-h3,
-.display-small {
-  font-size: 1.5rem;
-  font-weight: 500;
-  line-height: 1.3;
-  margin-bottom: 0.75rem;
-}
-
-/* ==========================================
-   3. BODY PARAGRAPHS & LISTS (Inter)
-   ========================================== */
-p,
-blockquote,
-li {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.6;
-  color: var(--md-sys-color-on-surface-variant);
-  max-width: 62ch;
-  /* Keeps paragraph text readable */
-  margin-bottom: 1.25rem;
-}
-
-/* Prominent lead paragraph for Hero section */
-p.lead {
-  font-size: 1.125rem;
-  font-weight: 500;
-  color: var(--md-sys-color-on-surface);
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-}
-
-p:not(:last-child) {
-  margin-bottom: 1.25rem;
-}
-
-/* Safe span selector without max-width limits */
-span {
-  font-family: var(--font-body);
-  color: inherit;
-}
-
-/* ==========================================
-   4. INTERACTIVE, BUTTONS & CHIPS (Auto-Fit Content)
-   ========================================== */
-
-/* Custom Badge / Pill Utility */
-.badge,
-.tag {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  max-width: max-content;
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  background-color: var(--md-sys-color-tertiary-container);
-  color: var(--md-sys-color-on-tertiary-container);
-  white-space: nowrap;
-}
-
-/* ==========================================
-   5. GOOGLE MATERIAL WEB COMPONENTS SIZING & FONTS
-   ========================================== */
-md-filled-button,
-md-outlined-button,
-md-text-button,
-md-elevated-button,
-md-tonal-button {
-  /* Enforce horizontal side padding tokens */
-  --md-filled-button-leading-space: 24px !important;
-  --md-filled-button-trailing-space: 24px !important;
-  --md-outlined-button-leading-space: 24px !important;
-  --md-outlined-button-trailing-space: 24px !important;
-  --md-elevated-button-leading-space: 24px !important;
-  --md-elevated-button-trailing-space: 24px !important;
-  --md-tonal-button-leading-space: 24px !important;
-  --md-tonal-button-trailing-space: 24px !important;
-
-  /* Layout & typography fixes */
-  display: inline-flex !important;
-  width: auto !important;
-  min-width: max-content !important;
-  max-width: none !important;
-  white-space: nowrap !important;
-
-  font-family: var(--font-body) !important;
-}
-
-/* ==========================================
-   MATERIAL DESIGN 3 BUTTONS
-   ========================================== */
-.m3-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 100px;
-  /* M3 Full shape for buttons */
-  font-size: 0.938rem;
-  font-weight: 600;
-  text-decoration: none;
-  width: fit-content;
-
-  /* Smooth transition for elevation and color */
-  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
-    box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
-    background-color 0.2s ease;
-}
-
-/* Filled Button Variant */
-.m3-button-filled {
-  background-color: var(--md-sys-color-primary, #6750a4);
-  color: var(--md-sys-color-on-primary, #ffffff);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-.m3-button-filled:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-}
-
-.m3-button-filled:active {
-  transform: translateY(0);
-}
-
-/* Down arrow icon styling */
-.btn-icon {
-  transition: transform 0.2s ease;
-}
-
-.m3-button:hover .btn-icon {
-  transform: translateY(2px);
-  /* Subtle downward nudge on hover */
-}
-
-/* ==========================================
-   DUAL-PILL FLOATING HEADER CONTAINER
-   ========================================== */
-.m3-nav-bar {
-  position: sticky;
-  top: 1rem;
-  z-index: 100;
-
-  /* Flex layout to hold both pills side-by-side */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  /* Gap between brand pill and links pill */
-
-  width: fit-content;
-  max-width: calc(100% - 2rem);
-  margin: 0 auto;
-
-  /* Container itself is transparent */
-  background: transparent;
-  padding: 0;
-  border: none;
-}
-
-/* ==========================================
-   HIGH-CONTRAST NAVBAR BRAND PILL (CROSS-FADE TEXT)
-   ========================================== */
-
-/* Outer Link: High-Contrast M3 Primary Pill */
-.m3-nav-pill-swap {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1.25rem;
-  border-radius: 100px;
-  /* Full M3 Pill shape */
-
-  /* High contrast filled state using Primary tokens */
-  background-color: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-  border: 1px solid transparent;
-
-  text-decoration: none;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
-
-  /* Smooth scale and shadow transition */
-  transition: background-color 0.3s ease,
-    box-shadow 0.3s ease,
-    transform 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 106, 107, 0.25);
-}
-
-.m3-nav-pill-swap:hover {
-  background-color: var(--md-sys-color-primary);
-  box-shadow: 0 4px 14px rgba(0, 106, 107, 0.4);
-  transform: translateY(-1px);
-}
-
-.m3-nav-pill-swap:active {
-  transform: translateY(0);
-}
-
-/* Inner Viewport: Contains stacked text for smooth cross-fade */
-.swap-viewport {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 1.25rem;
-}
-
-.swap-viewport .brand-text {
-  display: block;
-  white-space: nowrap;
-  color: var(--md-sys-color-on-primary) !important;
-  /* Pure opacity transition for soft dissolve effect */
-  transition: opacity 0.3s cubic-bezier(0.2, 0, 0, 1);
-  font-family: var(--font-display);
-}
-
-/* Default state: FullyRealise visible */
-.swap-viewport .default-text {
-  opacity: 1;
-}
-
-/* Hover state initial position: Home stacked directly on top, hidden */
-.swap-viewport .hover-text {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  /* Centers "Home" perfectly over "FullyRealise" */
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* ==========================================
-   CROSS-FADE HOVER TRANSITION
-   ========================================== */
-
-/* Fade out FullyRealise */
-.m3-nav-pill-swap:hover .default-text,
-.m3-nav-pill-swap:focus-visible .default-text {
-  opacity: 0;
-}
-
-/* Fade in Home */
-.m3-nav-pill-swap:hover .hover-text,
-.m3-nav-pill-swap:focus-visible .hover-text {
-  opacity: 1;
-}
-
-/* --- PILL 2: NAV LINKS CAPSULE --- */
-.nav-links {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.375rem;
-  border-radius: 999px;
-
-  /* Glassmorphism background for links pill */
-  background-color: rgb(from var(--md-sys-color-surface-container) r g b / 80%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--md-sys-color-surface-container-high);
-
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-}
-
-/* Individual Links (Google Material 3 Pill Style) */
-.nav-link {
-  font-family: var(--font-display);
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--md-sys-color-on-surface-variant);
-  text-decoration: none;
-  /* Strips browser blue/underlines */
-
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  /* Smooth pill shape */
-
-  /* Smooth color & background transitions */
   transition: background-color 0.2s ease, color 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Container for the nav links group */
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  background-color: transparent;
-  /* Parent container has no background */
-}
-
-/* Inactive links: Plain text, NO background */
-/* Inactive Links: Plain text, transparent background */
-.nav-link {
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--md-sys-color-on-surface-variant, #49454f);
-  text-decoration: none;
-  padding: 0.5rem 1.125rem;
-  border-radius: 999px;
-  background-color: transparent;
-  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Hover state for non-active links */
-.nav-link:hover {
-  color: var(--md-sys-color-on-surface, #1d1b20);
-  background-color: var(--md-sys-color-surface-container-high, rgba(0, 0, 0, 0.08));
-}
-
-/* 🌟 ACTIVE SECTION PILL INDICATOR 🌟 */
-.nav-link.active {
-  /* Uses Primary Container token with high-contrast fallbacks */
-  background-color: var(--md-sys-color-primary-container, #eaddff) !important;
-  color: var(--md-sys-color-on-primary-container, #21005d) !important;
-  font-weight: 700;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 /* ==========================================
-   DARK MODE ADJUSTMENTS FOR DUAL-PILL NAV
+   6. DEEP DIVE SECTION (BENTO GRID)
    ========================================== */
-@media (prefers-color-scheme: dark) {
-
-  /* Brand Pill */
-  .nav-brand {
-    background-color: var(--md-sys-color-primary, #d0bcff);
-    color: var(--md-sys-color-on-primary, #381e72);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-  }
-
-  /* Links Pill Capsule (Glassmorphic Dark Surface) */
-  .nav-links {
-    background-color: rgb(from var(--md-sys-color-surface-container, #211f26) r g b / 75%);
-    border-color: var(--md-sys-color-surface-container-high, #2b2930);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-  }
-
-  /* Individual Nav Links */
-  .nav-link {
-    color: var(--md-sys-color-on-surface-variant, #cac4d0);
-  }
-
-  .nav-link:hover {
-    color: var(--md-sys-color-on-surface, #e6e0e9);
-  }
-
-  /* Active State inside the Pill */
-  .nav-link.active {
-    background-color: var(--md-sys-color-secondary-container, #4a4458);
-    color: var(--md-sys-color-on-secondary-container, #e8def8);
-  }
-
-  .nav-links {
-    /* 1. Translucent dark base (~60% opacity so background elements show through) */
-    background-color: rgba(33, 31, 38, 0.6) !important;
-
-    /* 2. Hardware-accelerated blur */
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    backdrop-filter: blur(16px) saturate(180%);
-
-    /* 3. Subtle rim light to define the pill edges over dark sections */
-    border: 1px solid rgba(255, 255, 255, 0.12);
-
-    /* 4. Deep ambient shadow */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  }
-}
-
-/* ==========================================
-   HIGH-CONTRAST PILL BRAND LINK
-   ========================================== */
-.nav-brand {
-  /* Layout & Pill Geometry */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1.25rem;
-  border-radius: 999px;
-  /* Smooth full-pill shape */
-
-  /* High-Contrast Colors */
-  background-color: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-
-  /* Typography */
-  font-family: var(--font-display);
-  font-size: 0.938rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  text-decoration: none;
-  /* Removes default link underline */
-
-  /* Elevation & Smooth Hover */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Hover & Focus Interaction */
-.nav-brand:hover,
-.nav-brand:focus-visible {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-  outline: none;
-}
-
-/* ==========================================
-   MOBILE VIEW: BOTTOM FLOATING NAV BAR
-   ========================================== */
-@media (max-width: 600px) {
-  .m3-nav-bar {
-    /* Pin to bottom instead of top */
-    top: auto;
-    bottom: 1rem;
-
-    /* Center and elevate above bottom edge */
-    left: 50%;
-    transform: translateX(-50%);
-    position: fixed;
-    /* Ensures it floats over all section content */
-
-    width: max-content;
-    max-width: calc(100% - 2rem);
-    z-index: 1000;
-  }
-
-  /* Make links slightly tighter for smaller touch screens */
-  .nav-links {
-    padding: 0.25rem 0.375rem;
-  }
-
-  .nav-link {
-    padding: 0.5rem 0.875rem;
-    font-size: 0.875rem;
-  }
-
-  /* Safe area padding for modern iPhones with bottom home bar indicator */
-  @supports (padding-bottom: env(safe-area-inset-bottom)) {
-    .m3-nav-bar {
-      bottom: calc(1rem + env(safe-area-inset-bottom));
-    }
-  }
-}
-
-@media (max-width: 600px) {
-
-  .main-container,
-  .section-container,
-  #about {
-    /* Shift padding to the bottom to clear the mobile nav bar */
-    padding-top: 2rem;
-    padding-bottom: 5rem;
-  }
-}
-
-/* ==========================================
-   DEEP DIVE SECTION STYLING
-   ========================================== */
-
 #about-details {
   min-height: 100vh;
   min-height: 100svh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  box-sizing: border-box;
+  height: auto;
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  padding: 5rem 1.5rem 2rem;
+
+  padding: 5rem 1.5rem 6rem;
+  box-sizing: border-box;
+
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  /* Changes from 'always' to 'normal' */
 }
 
+/* Ensure the wrapper centers itself when space permits */
 .details-wrapper {
   max-width: 960px;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin: auto 0;
+  /* Flex centering when screen height allows */
 }
 
-.details-header h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--md-sys-color-on-surface);
-  margin: 0.25rem 0 0 0;
-}
-
-/* Bento Grid System */
 .details-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.25rem;
 }
 
-/* Individual Feature Cards */
+/* Fix for tight list items inside containers */
+
+.detail-card ul li,
+.about-card ul li,
+.philosophy-list li {
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+  /* Tight spacing between list items */
+}
+
 .detail-card {
   padding: 1.75rem;
   border-radius: 20px;
-  /* M3 Medium/Large shape */
   background-color: var(--md-sys-color-surface-container);
   border: 1px solid var(--md-sys-color-outline-variant);
   display: flex;
@@ -864,77 +603,28 @@ md-tonal-button {
 }
 
 .detail-card:hover {
-  /* Lift card up by 4px */
   transform: translateY(-4px);
-
-  /* Add M3 surface container high-elevation shadow */
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12),
-    0 4px 12px -2px rgba(0, 0, 0, 0.08);
-
-  /* Subtle border highlight */
-  border-color: var(--md-sys-color-outline, #79747e);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12);
+  border-color: var(--md-sys-color-outline);
 }
 
-/* Dark Mode hover shadow adjustment */
-@media (prefers-color-scheme: dark) {
-  .detail-card:hover {
-    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.45),
-      0 4px 12px -2px rgba(0, 0, 0, 0.3);
-    border-color: var(--md-sys-color-outline, #938f99);
-  }
-}
-
-/* Highlight style for key card */
 .detail-card.highlight-card {
   background-color: var(--md-sys-color-surface-container-high);
 }
 
-/* Card spanning across both columns on desktop */
 .detail-card.span-two {
   grid-column: span 2;
 }
 
-.card-icon {
-  font-size: 1.5rem;
-}
-
-.detail-card h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--md-sys-color-on-surface);
-  margin: 0;
-}
-
-.detail-card p {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--md-sys-color-on-surface-variant);
-  margin: 0;
-}
-
-.detail-card li {
-  margin: 0.2em;
-}
-
-/* ==========================================
-   SIDE-BY-SIDE TEXT COLUMNS (SPAN-TWO CARDS)
-   ========================================== */
-
-/* Container for side-by-side text blocks */
 .card-columns {
   display: flex;
   gap: 1.5rem;
-  /* Space between left and right columns */
   width: 100%;
   margin-top: 1rem;
-  text-align: left;
-  /* Keeps column text left-aligned for scannability */
 }
 
-/* Individual column styling */
 .card-columns .column {
   flex: 1;
-  /* Makes both columns take equal 50% width */
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -945,119 +635,27 @@ md-tonal-button {
   font-size: 1rem;
   font-weight: 600;
   color: var(--md-sys-color-primary);
-  margin: 0;
 }
 
-.card-columns .column p {
-  font-size: 0.925rem;
-  line-height: 1.5;
-  color: var(--md-sys-color-on-surface-variant);
-  margin: 0;
-}
-
-/* Responsive adjustment for Mobile screens */
-@media (max-width: 768px) {
-  .card-columns {
-    flex-direction: column;
-    /* Stacks text columns vertically on mobile */
-    gap: 1rem;
-  }
-}
-
-/* List styling inside the philosophy card */
-.philosophy-list {
-  margin: 0;
-  padding-left: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  color: var(--md-sys-color-on-surface-variant);
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
   .details-grid {
     grid-template-columns: 1fr;
-    /* Collapse to 1 column on smaller screens */
   }
 
   .detail-card.span-two {
     grid-column: span 1;
   }
-}
 
-/* ==========================================
-   FLOATING ACTION BUTTON (FAB)
-   ========================================== */
-.m3-fab {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 990;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  border-radius: 16px;
-  /* M3 Medium shape for FABs */
-
-  background-color: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  text-decoration: none;
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  font-weight: 600;
-
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
-  /* Hidden & shifted down by default */
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(16px);
-  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.2, 0, 0, 1), visibility 0.3s;
-}
-
-/* Active class toggled by JavaScript */
-.m3-fab.is-visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.m3-fab:hover {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-  transform: translateY(-2px);
-}
-
-.m3-fab:active {
-  transform: translateY(0);
-}
-
-/* Mobile Adjustment: Prevent overlap with bottom navigation bar */
-@media (max-width: 600px) {
-  .m3-fab {
-    bottom: 5.25rem;
-    /* Sits right above mobile bottom nav */
-    right: 1.25rem;
-    padding: 0.875rem 1rem;
-  }
-
-  /* Optionally hide text label on small mobile screens to save space */
-  .fab-text {
-    display: none;
+  .card-columns {
+    flex-direction: column;
+    gap: 1rem;
   }
 }
 
 /* ==========================================
-   PROJECTS SECTION
+   7. PROJECTS SECTION
    ========================================== */
-
 #projects {
-  padding: 4rem 2rem;
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
 }
@@ -1066,45 +664,24 @@ md-tonal-button {
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
+  padding-bottom: 2rem;
+  /* Extra inner cushion for bottom grid cards */
 }
 
-.section-header {
-  margin-bottom: 2.5rem;
+.project-actions {
+  display: flex;
+  align-items: center;
+  /* Vertically centers buttons relative to each other */
+  gap: 0.75rem;
+  margin-top: auto;
 }
 
-.section-badge {
-  display: inline-block;
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--md-sys-color-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.5rem;
-}
-
-.section-title {
-  font-family: var(--font-display);
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-}
-
-.section-subtitle {
-  font-size: 1rem;
-  color: var(--md-sys-color-on-surface-variant);
-  max-width: 600px;
-  margin: 0;
-}
-
-/* Bento Grid */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
 
-/* Card Styling */
 .project-card {
   background-color: var(--md-sys-color-surface-container);
   border: 1px solid var(--md-sys-color-outline-variant);
@@ -1124,138 +701,17 @@ md-tonal-button {
   border-color: var(--md-sys-color-primary);
 }
 
-/* Span Two Column Layout for Featured Card */
 .project-card.span-two {
   grid-column: span 2;
   background-color: var(--md-sys-color-surface-container-high);
 }
 
-.project-meta {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.meta-chip {
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.25rem 0.75rem;
-  border-radius: 100px;
-  background-color: var(--md-sys-color-surface-container-highest);
-  color: var(--md-sys-color-on-surface-variant);
-}
-
-.meta-chip.active {
-  background-color: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
-}
-
-.project-title {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin: 0 0 0.75rem 0;
-  color: var(--md-sys-color-on-surface);
-}
-
-.project-description {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--md-sys-color-on-surface-variant);
-  margin: 0 0 1.5rem 0;
-}
-
-/* Tech Pills */
-.tech-stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.tech-pill {
-  font-size: 0.8rem;
-  font-weight: 500;
-  padding: 0.3rem 0.8rem;
-  border-radius: 8px;
-  border: 1px solid var(--md-sys-color-outline-variant);
-  color: var(--md-sys-color-on-surface-variant);
-}
-
-/* Actions */
-.project-actions {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  margin-top: auto;
-}
-
-/* Button Variants */
-.m3-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 100px;
-  font-family: var(--font-display);
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.m3-button-filled {
-  background-color: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-}
-
-.m3-button-tonal {
-  background-color: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
-}
-
-.m3-button:hover {
-  transform: translateY(-1px);
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .project-card.span-two {
-    grid-column: span 1;
-  }
-}
-
-/* ==========================================
-   FEATURED CARD SIDE-BY-SIDE LAYOUT
-   ========================================== */
-
-/* Grid container inside the featured card */
 .project-card.span-two .card-body {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
-  /* 60% text, 40% image preview */
   gap: 2rem;
   align-items: center;
   width: 100%;
-}
-
-.project-card.span-two .project-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-/* Image Preview Frame */
-.project-preview {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
 }
 
 .preview-frame {
@@ -1277,16 +733,77 @@ md-tonal-button {
   display: block;
 }
 
-/* Subtle zoom effect on card hover */
 .project-card.span-two:hover .preview-frame {
   transform: scale(1.02);
 }
 
-/* Mobile & Tablet Stacking */
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tech-pill {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ==========================================
+   PROJECT META CHIPS
+   ========================================== */
+
+.project-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+/* Base Meta Chip */
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  /* Full M3 Pill shape */
+
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
+  /* Dynamic Surface Container styling */
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+
+  white-space: nowrap;
+}
+
+/* Active / Featured Chip Accent */
+.meta-chip.active {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: transparent;
+}
+
 @media (max-width: 900px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card.span-two {
+    grid-column: span 1;
+  }
+
   .project-card.span-two .card-body {
     grid-template-columns: 1fr;
-    /* Stacks vertically on smaller screens */
     gap: 1.5rem;
   }
 
@@ -1296,110 +813,463 @@ md-tonal-button {
 }
 
 /* ==========================================
-   FAIL-SAFE M3 HERO GLITCH EFFECT
+   8. BUTTONS & UTILITIES
+   ========================================== */
+.m3-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  /* Enforces equal height for filled & tonal buttons */
+  padding: 0 1.25rem;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 1;
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+    background-color 0.2s ease;
+}
+
+.m3-button-filled {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.m3-button-tonal {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.m3-button:hover {
+  transform: translateY(-1px);
+}
+
+.badge,
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+  white-space: nowrap;
+}
+
+/* Floating Action Button (FAB) - Centered Desktop */
+.m3-fab {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  right: auto;
+  z-index: 990;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 16px);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.2, 0, 0, 1), visibility 0.3s;
+}
+
+.m3-fab.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.m3-fab:hover {
+  transform: translate(-50%, -2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile View: Bottom-Right Docking */
+@media (max-width: 600px) {
+  .m3-fab {
+    bottom: 5.25rem;
+    left: auto;
+    right: 1.25rem;
+    padding: 0.875rem 1rem;
+    /* Reset X translation so it doesn't shift left on mobile */
+    transform: translateY(16px);
+  }
+
+  .m3-fab.is-visible {
+    transform: translateY(0);
+  }
+
+  .m3-fab:hover {
+    transform: translateY(-2px);
+  }
+
+  .fab-text {
+    display: none;
+  }
+}
+
+/* ==========================================
+   CONTACT SECTION: CHEVRON PATTERN & SURFACE
    ========================================== */
 
-.glitch-container {
+/* 1. Full-width Section with CSS Diagonal Chevron Background */
+/* ==========================================
+   CONTACT SECTION: FULL-VIEWPORT ANGLED STRIPES
+   ========================================== */
+
+.contact-section {
   position: relative;
-  display: inline-block;
-  min-height: 1.2em;
-  /* Prevents layout collapse while switching */
+  width: 100vw;
+  min-height: 100vh;
+  /* Forces full-screen height */
+  margin-left: calc(-50vw + 50%);
+  /* Full-bleed breakout */
+  margin-right: calc(-50vw + 50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1.5rem;
+  background-color: var(--md-sys-color-background);
+  overflow: hidden;
 }
 
-.glitch-text {
-  position: relative;
-  display: inline-block;
-  font-family: var(--font-display, 'Google Sans Flex', sans-serif);
-  color: var(--md-sys-color-on-surface);
-  opacity: 1;
-  /* Default to visible so it NEVER disappears permanently */
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-/* Active Glitch State */
-.glitch-text.is-glitching {
-  animation: m3-entry 0.4s var(--md-sys-motion-easing-emphasized-decelerate, cubic-bezier(0.05, 0.7, 0.1, 1)) forwards;
-}
-
-/* Glitch Pseudo-Layers (Red/Cyan Split) */
-.glitch-text.is-glitching::before,
-.glitch-text.is-glitching::after {
-  content: attr(data-text);
+/* 🌟 Continuous Angled Diagonal Stripes Pattern */
+.contact-section::before {
+  content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.8;
-  display: block;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.18;
+  /* Soft opacity to keep text contrast clean */
   pointer-events: none;
+
+  /* Creates sharp 45-degree angled stripes */
+  background-image: repeating-linear-gradient(45deg,
+      var(--md-sys-color-secondary-container),
+      var(--md-sys-color-secondary-container) 30px,
+      transparent 30px,
+      transparent 60px);
 }
 
-/* Cyan Layer */
-.glitch-text.is-glitching::before {
-  left: 2px;
-  text-shadow: -2px 0 #00fff9;
-  animation: glitch-anim-1 0.25s infinite linear alternate-reverse;
-  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+/* 🌟 Solid Center Surface Card (Remains 100% opaque) */
+.contact-surface-card {
+  position: relative;
+  z-index: 2;
+  /* Keeps card above striped backdrop */
+  width: 100%;
+  max-width: 680px;
+  padding: 3.5rem 2.5rem;
+  border-radius: 32px;
+
+  /* Opaque background to completely isolate content from background pattern */
+  background-color: var(--md-sys-color-surface-container-high, #1e1f23);
+  border: 1px solid rgb(from var(--md-sys-color-outline-variant) r g b / 30%);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-/* Magenta Layer */
-.glitch-text.is-glitching::after {
-  left: -2px;
-  text-shadow: 2px 0 #ff00c1;
-  animation: glitch-anim-2 0.25s infinite linear alternate-reverse 0.05s;
-  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+
+/* --- INTERNAL ELEMENTS --- */
+
+/* Status Indicator Badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 100px;
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid rgb(from var(--md-sys-color-outline-variant) r g b / 30%);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
 }
 
-/* Keyframes */
-@keyframes glitch-anim-1 {
-  0% {
-    transform: translate(0);
-  }
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  /* Green status color */
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}
 
-  20% {
-    transform: translate(-3px, 1px);
-  }
+.contact-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
 
-  40% {
-    transform: translate(-1px, -2px);
-  }
+.contact-subtitle {
+  font-size: 1.05rem;
+  color: var(--md-sys-color-on-surface-variant);
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
 
-  60% {
-    transform: translate(2px, 1px);
-  }
+/* 🌟 Primary Focus Capsule (Dynamic Theme Responsive) */
+.focus-capsule {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.75rem 0.75rem 0.75rem 1.5rem;
+  border-radius: 100px;
 
-  80% {
-    transform: translate(1px, -1px);
-  }
+  /* 🌟 Use dynamic M3 surface tokens that adjust per theme */
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
 
-  100% {
-    transform: translate(0);
+  margin-bottom: 2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 
+   If your theme switcher uses a CSS class like .light-mode / .dark-mode on <body> or <html>,
+   you can explicitly map the container tokens if they aren't auto-updating:
+*/
+
+/* Light Mode explicit adjustment if needed */
+[data-theme="light"] .focus-capsule,
+body.light-mode .focus-capsule {
+  background-color: var(--md-sys-color-surface-container-low);
+  /* Slightly darker/recessed than the white surface card in light mode */
+  border-color: rgb(from var(--md-sys-color-outline-variant) r g b / 40%);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Dark Mode explicit adjustment */
+[data-theme="dark"] .focus-capsule,
+body.dark-mode .focus-capsule {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  /* Darker recessed black/gray in dark mode */
+  border-color: rgb(from var(--md-sys-color-outline-variant) r g b / 25%);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.focus-capsule:hover {
+  transform: translateY(-1px);
+  border-color: rgb(from var(--md-sys-color-outline) r g b / 40%);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.email-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  /* Prevents text overflow */
+}
+
+.email-icon {
+  color: var(--md-sys-color-primary);
+  font-size: 1.5rem;
+}
+
+.email-address {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Primary Capsule Button */
+/* ==========================================
+   CONTACT CARD: ENHANCED BUTTON STYLES
+   ========================================== */
+
+/* 1. Primary "Copy Email" Button (High-Contrast & Vibrant) */
+.m3-button-filled {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: 100px;
+
+  /* Primary theme color with strong text contrast */
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+
+  /* Elevated drop shadow & subtle inner glow */
+  box-shadow: 0 4px 14px rgb(from var(--md-sys-color-primary) r g b / 35%);
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+    filter 0.2s ease;
+}
+
+.m3-button-filled:hover {
+  /* Dynamic lift + glow intensification */
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 22px rgb(from var(--md-sys-color-primary) r g b / 50%);
+  filter: brightness(1.08);
+}
+
+.m3-button-filled:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgb(from var(--md-sys-color-primary) r g b / 30%);
+}
+
+/* 2. Secondary Social Pills (Filled Sub-Container Look) */
+/* ==========================================
+   BRAND-SPECIFIC PILL STYLES
+   ========================================== */
+
+/* Base pill structure reset for dynamic color transitions */
+.m3-pill-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 100px;
+  border: 1px solid rgb(from var(--brand-color) r g b / 30%);
+
+  /* Tinted background state using brand color at low opacity */
+  background-color: rgb(from var(--brand-color) r g b / 12%);
+  color: var(--md-sys-color-on-surface);
+
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Hover state: Full brand color pop */
+.m3-pill-link:hover {
+  background-color: var(--brand-color);
+  color: var(--brand-on-color, #ffffff);
+  /* Fallback white text for high contrast */
+  border-color: var(--brand-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgb(from var(--brand-color) r g b / 35%);
+}
+
+.m3-pill-link:hover .arrow-icon {
+  opacity: 1;
+  transform: translate(3px, -3px);
+}
+
+/* 1. GitHub Brand Pill */
+.pill-github {
+  --brand-color: #02074e;
+  --brand-on-color: #ffffff;
+}
+
+/* Light mode override for GitHub if your dark surface makes dark gray blend in */
+@media (prefers-color-scheme: dark) {
+  .pill-github {
+    --brand-color: #02074e;
   }
 }
 
-@keyframes glitch-anim-2 {
-  0% {
-    transform: translate(0);
+/* 2. LinkedIn Brand Pill */
+.pill-linkedin {
+  --brand-color: #0a66c2;
+  --brand-on-color: #ffffff;
+}
+
+/* 3. WhatsApp Brand Pill */
+.pill-whatsapp {
+  --brand-color: #25d366;
+  --brand-on-color: #0b2212;
+  /* Dark text on bright WhatsApp green for contrast */
+}
+
+/* M3 Toast Notification */
+.m3-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  border-radius: 12px;
+  background-color: var(--md-sys-color-inverse-surface, #313033);
+  color: var(--md-sys-color-inverse-on-surface, #f4eff4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.2, 0, 0, 1), visibility 0.25s;
+}
+
+.m3-toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.toast-icon {
+  color: #4ade80;
+  /* Success green */
+  font-size: 1.25rem;
+}
+
+/* --- MOBILE ADJUSTMENTS --- */
+@media (max-width: 600px) {
+  .contact-section {
+    padding: 4rem 1rem;
   }
 
-  20% {
-    transform: translate(2px, -1px);
+  .contact-surface-card {
+    padding: 2.5rem 1.25rem;
+    border-radius: 24px;
   }
 
-  40% {
-    transform: translate(1px, 2px);
+  .focus-capsule {
+    flex-direction: column;
+    padding: 1.25rem;
+    border-radius: 24px;
+    align-items: stretch;
   }
 
-  60% {
-    transform: translate(-2px, -1px);
+  .email-info {
+    justify-content: center;
+    margin-bottom: 0.5rem;
   }
 
-  80% {
-    transform: translate(-1px, 1px);
-  }
-
-  100% {
-    transform: translate(0);
+  .m3-button-filled {
+    justify-content: center;
+    width: 100%;
   }
 }

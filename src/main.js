@@ -62,15 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // IF AT TOP OR HOME SECTION: Remove pills from all nav links
-    if (window.scrollY < 200 || currentSectionId === 'home' || currentSectionId === 'landing') {
-      navLinks.forEach(link => link.classList.remove('active'));
-    }
     // IF IN A SPECIFIC NAV SECTION: Light up only that link
-    else if (currentSectionId) {
+    if (currentSectionId) {
       navLinks.forEach(link => {
         if (link.getAttribute('href') === `#${currentSectionId}`) {
           link.classList.add('active');
-        } else {
+        }
+        else {
           link.classList.remove('active');
         }
       });
@@ -81,28 +79,45 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
   const fab = document.getElementById('fab-contact');
   const deepDiveSection = document.getElementById('about-details');
+  const contactSection = document.getElementById('contact');
 
   if (!fab || !deepDiveSection) return;
 
-  const observerOptions = {
-    root: null,
-    threshold: 0.1 /* Triggers when 10% of #about-details is visible */
+  let isPastDeepDive = false;
+  let isInContact = false;
+
+  // Helper function to update FAB visibility
+  const updateFabVisibility = () => {
+    // Show only if we are past #about-details AND NOT inside #contact
+    if (isPastDeepDive && !isInContact) {
+      fab.classList.add('is-visible');
+    } else {
+      fab.classList.remove('is-visible');
+    }
   };
 
-  const fabObserver = new IntersectionObserver((entries) => {
+  // 1. Observer for #about-details (Shows FAB)
+  const deepDiveObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      // If user reaches #about-details or scrolls past it
-      if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
-        fab.classList.add('is-visible');
-      } else {
-        fab.classList.remove('is-visible');
-      }
+      isPastDeepDive = entry.isIntersecting || entry.boundingClientRect.top < 0;
+      updateFabVisibility();
     });
-  }, observerOptions);
+  }, { root: null, threshold: 0.1 });
 
-  fabObserver.observe(deepDiveSection);
+  deepDiveObserver.observe(deepDiveSection);
+
+  // 2. Observer for #contact (Hides FAB)
+  if (contactSection) {
+    const contactObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isInContact = entry.isIntersecting;
+        updateFabVisibility();
+      });
+    }, { root: null, threshold: 0.1 });
+
+    contactObserver.observe(contactSection);
+  }
 });
-
 document.addEventListener('DOMContentLoaded', () => {
   const aboutCard = document.querySelector('#about .about-card');
   const homeSection = document.querySelector('#home');
@@ -138,30 +153,100 @@ document.addEventListener('DOMContentLoaded', () => {
   homeObserver.observe(homeSection);
 });
 
-// src/main.js
 
 document.addEventListener('DOMContentLoaded', () => {
-  const glitchEl = document.getElementById('glitch-el');
+  const matrixText = document.querySelector('.matrix-text');
+  if (!matrixText) return;
 
-  // REPLACE THIS WITH YOUR REAL NAME OR DISPLAY NAME
-  const finalName = "Ashraf Danial";
-  const introText = "A Dream";
+  const characters = '0123456789ABCDEF@#$%&*!<>?/[]{}';
+  const targetName = matrixText.dataset.value || "YOUR NAME";
+  const initialText = "A Dream";
 
-  if (!glitchEl) return;
+  let animationFrame = null;
 
-  // 1. Set initial text immediately
-  glitchEl.textContent = introText;
-  glitchEl.setAttribute('data-text', introText);
+  const decodeToNameRandomly = () => {
+    const targetLength = targetName.length;
 
-  // 2. Trigger Glitch Chaos & Swap to Final Name (after 1 second)
+    // Build an array tracking each character's status and random resolve time
+    const charStates = Array.from({ length: targetLength }, (_, i) => {
+      return {
+        targetChar: targetName[i],
+        // Assign a random frame threshold for when this specific character locks in
+        // (Between 15 and 50 frames into the animation)
+        resolveAtFrame: Math.floor(Math.random() * 35) + 15,
+        isResolved: false
+      };
+    });
+
+    let currentFrame = 0;
+
+    const animate = () => {
+      currentFrame++;
+
+      // Construct the display string for the current frame
+      const output = charStates.map((state) => {
+        // Space handling
+        if (state.targetChar === ' ') return ' ';
+
+        // Check if this position has hit its random resolve threshold
+        if (currentFrame >= state.resolveAtFrame) {
+          state.isResolved = true;
+          return state.targetChar;
+        }
+
+        // Otherwise, render a random Matrix glyph
+        return characters[Math.floor(Math.random() * characters.length)];
+      }).join('');
+
+      matrixText.innerText = output;
+
+      // Check if all non-space characters have resolved
+      const allResolved = charStates.every(s => s.isResolved || s.targetChar === ' ');
+
+      if (!allResolved) {
+        // Run at ~30 FPS for readable scramble speed
+        setTimeout(() => {
+          animationFrame = requestAnimationFrame(animate);
+        }, 35);
+      } else {
+        matrixText.innerText = targetName; // Enforce clean final string
+      }
+    };
+
+    // Cancel any previous animation loops before starting
+    if (animationFrame) cancelAnimationFrame(animationFrame);
+    animate();
+  };
+
   setTimeout(() => {
-    glitchEl.classList.add('is-glitching');
-    glitchEl.textContent = finalName;
-    glitchEl.setAttribute('data-text', finalName);
-  }, 1000);
+    decodeToNameRandomly();
+  }, 800);
+});
+document.addEventListener('DOMContentLoaded', () => {
+  const copyBtn = document.getElementById('copy-email-btn');
+  const emailText = document.getElementById('contact-email');
+  const toast = document.getElementById('toast');
 
-  // 3. Resolve Glitch (Stop chaos, restore clean typography)
-  setTimeout(() => {
-    glitchEl.classList.remove('is-glitching');
-  }, 1800);
+  if (copyBtn && emailText && toast) {
+    let toastTimeout;
+
+    copyBtn.addEventListener('click', () => {
+      const email = emailText.textContent.trim();
+
+      navigator.clipboard.writeText(email).then(() => {
+        // Clear active timeout if clicked repeatedly
+        clearTimeout(toastTimeout);
+
+        // Show toast
+        toast.classList.add('show');
+
+        // Hide toast after 3 seconds
+        toastTimeout = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      }).catch(err => {
+        console.error('Failed to copy email: ', err);
+      });
+    });
+  }
 });

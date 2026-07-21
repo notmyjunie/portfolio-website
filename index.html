@@ -4,32 +4,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>a.d | FullyRealised</title>
+  <title>A Dream | Fully Realised</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 
 <body>
   <header class="m3-nav-bar">
     <!-- Pill 1: Brand / Logo -->
-    <a href="#home" class="m3-nav-pill-swap" aria-label="Home">
-      <span class="swap-viewport">
-        <span class="brand-text default-text">FullyRealised</span>
-        <span class="brand-text hover-text">Home</span>
-      </span>
+    <a href="#home" class="nav-link nav-home-pill active" aria-label="Home">
+      <span class="material-symbols-outlined nav-icon">home</span>
     </a>
-
     <!-- Pill 2: Nav Links -->
     <nav class="nav-links">
-      <a href="#about" class="nav-link">About</a>
-      <a href="#projects" class="nav-link">Projects</a>
-      <a href="#contact" class="nav-link">Contact</a>
+      <a href="#about" class="nav-link">
+        <span class="material-symbols-outlined nav-icon">person</span>
+        About
+      </a>
+      <a href="#projects" class="nav-link">
+        <span class="material-symbols-outlined nav-icon">folder</span>
+        Projects
+      </a>
+      <a href="#contact" class="nav-link">
+        <span class="material-symbols-outlined nav-icon">mail</span>
+        Contact
+      </a>
     </nav>
   </header>
   <main class="main-container" id="home"
     style="background-color: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface); min-height: 100vh; padding: 2rem;">
 
     <!-- Display Title -->
-    <h1 class="hero-title glitch-container" id="glitch-title">
-      <span class="glitch-text" id="glitch-el" data-text="A Dream">Ashraf Danial</span>
+    <h1 class="display-large">
+      <span class="matrix-text" data-value="Ashraf Danial">
+        A Dream
+      </span>
     </h1>
     <ul>
       <li>
@@ -63,7 +72,8 @@
       <h2>Building functional systems & intuitive digital experiences</h2>
 
       <p class="about-body">
-        I’m a Computer Science undergraduate at Universiti Malaysia Pahang Al-Sultan Abdullah based in <strong>Kuala
+        I’m a Computer Science undergraduate at Universiti Malaysia Pahang Al-Sultan Abdullah based in <strong>Jelatek,
+          Kuala
           Lumpur</strong> with
         a passion for
         software craftsmanship. My focus lies at the intersection of robust backend logic with <strong>Java</strong> and
@@ -311,33 +321,91 @@
         <article class="project-card">
           <div class="project-content">
             <div class="project-meta">
-              <span class="meta-chip">Java System</span>
+              <span class="meta-chip">Automation</span>
             </div>
 
-            <h3 class="project-title">Task Management Architecture</h3>
+            <h3 class="project-title">Chat Linking Automation</h3>
             <p class="project-description">
-              A case study exploring efficient data sorting algorithms and task scheduling strategies implemented in
-              pure Java.
+              An automated system linking the chat messages and its history between two different platforms utilising
+              webhooks.
             </p>
 
             <div class="tech-stack">
-              <span class="tech-pill">Java</span>
-              <span class="tech-pill">Algorithms</span>
-              <span class="tech-pill">Data Structures</span>
+              <span class="tech-pill">Javascript</span>
+              <span class="tech-pill">Webhook</span>
             </div>
 
-            <div class="project-actions">
-              <a href="https://github.com/yourusername" target="_blank" class="m3-button m3-button-tonal">
-                <span>Repository</span>
-              </a>
-            </div>
           </div>
-        </article>
-
       </div>
+      </article>
+
+    </div>
     </div>
   </section>
-  <!-- Floating Action Button (Hidden by default, shown via JS) -->
+  <section id="contact" class="contact-section">
+    <!-- 🌟 Solid Foreground Card floating over the chevron background -->
+    <div class="contact-surface-card">
+
+      <!-- Status Badge -->
+      <span class="status-badge">
+        <span class="status-dot"></span> Open for New Opportunities
+      </span>
+
+      <!-- Hero Typography -->
+      <h2 class="contact-title">Wanna keep in touch?</h2>
+      <p class="contact-subtitle">
+        Direct communication works best. Send me an email or find me across the web.
+      </p>
+
+      <!-- Main Focus Capsule -->
+      <div class="focus-capsule">
+        <div class="email-info">
+          <span class="material-symbols-outlined email-icon">mail</span>
+          <span class="email-address" id="contact-email">ashrafd.fr@proton.me</span>
+        </div>
+        <button type="button" class="m3-button-filled" id="copy-email-btn" aria-label="Copy email address">
+          <span class="material-symbols-outlined btn-icon">content_copy</span>
+          <span class="btn-text">Copy Email</span>
+        </button>
+      </div>
+
+      <!-- Secondary Social / Action Pills -->
+      <div class="secondary-pills">
+        <a href="https://github.com/junienet" target="_blank" rel="noopener noreferrer"
+          class="m3-pill-link pill-github">
+          <span class="material-symbols-outlined pill-icon">code</span>
+          <span>GitHub</span>
+          <span class="material-symbols-outlined arrow-icon">north_east</span>
+        </a>
+
+        <a href="https://www.linkedin.com/in/ashraf-danial-fakhrul-razi-961510366/" target="_blank"
+          rel="noopener noreferrer" class="m3-pill-link pill-linkedin">
+          <span class="material-symbols-outlined pill-icon">work</span>
+          <span>LinkedIn</span>
+          <span class="material-symbols-outlined arrow-icon">north_east</span>
+        </a>
+
+        <a href="https://wa.me/+601120967312" class="m3-pill-link pill-whatsapp">
+          <span class="material-symbols-outlined pill-icon">chat</span>
+          <span>WhatsApp</span>
+          <span class="material-symbols-outlined arrow-icon">north_east</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="m3-toast" role="status" aria-live="polite">
+      <span class="material-symbols-outlined toast-icon">check_circle</span>
+      <span class="toast-text">Email copied to clipboard!</span>
+    </div>
+  </section> <!-- Floating Action Button (Hidden by default, shown via JS) -->
+  <section id="footer" class="section-container">
+    <p style="margin-top: 3em;">Website made with ❤️ following M3E guidelines.</p>
+    <p>Photos are taken by myself.</p>
+    <p>"<b>A</b> <b>D</b>ream <b>F</b>ully <b>R</b>ealised" is just based on the first letters of my name.</p>
+    <p>Site last updated 22 July 2026.</p>
+  </section>
   <a href="#contact" id="fab-contact" class="m3-fab m3-fab-extended" aria-label="Contact Me">
     <svg class="fab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"
       fill="currentColor">

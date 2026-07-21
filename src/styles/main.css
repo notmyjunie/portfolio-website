@@ -63,6 +63,87 @@ body::-webkit-scrollbar {
   /* Consistent spacing between title, subtitle, and badges */
 }
 
+/* ==========================================
+   HOMEPAGE & BEACH SECTION TRANSITIONS
+   ========================================== */
+
+/* Base main container styling */
+.main-container#home {
+  position: relative;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+
+  /* Gradient mask that smoothly fades out the bottom edge into #about */
+  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+/* Base section container defaults */
+.section-container {
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   2. ABOUT SECTION (BEACH GRADIENT OVERLAY)
+   ========================================== */
+/* ==========================================
+   ABOUT SECTION: BEACH + DARK MODE ADAPTATION
+   ========================================== */
+
+#about.beach-theme {
+  background-image:
+    /* Layer 1: Darkening tint to preserve text contrast in both modes */
+    linear-gradient(180deg,
+      rgba(0, 0, 0, 0.35) 0%,
+      rgba(0, 0, 0, 0.15) 100%),
+    /* Layer 2: Top transition blend from #home */
+    linear-gradient(180deg,
+      var(--md-sys-color-surface) 0%,
+      rgba(0, 0, 0, 0) 18%),
+    /* Layer 4: Beach image background */
+    url('../../public/beach.avif');
+
+  background-size: cover;
+  background-position: center bottom;
+  overflow: hidden;
+}
+
+/* Light Mode Card styling over Beach */
+#about.beach-theme .about-card {
+  background-color: rgba(244, 251, 251, 0.85) !important;
+  /* Semi-transparent Light Teal Slate surface */
+  color: #161d1d !important;
+  border: 1px solid rgba(111, 121, 121, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Dark Mode Card styling over Beach */
+@media (prefers-color-scheme: dark) {
+  #about.beach-theme .about-card {
+    background-color: rgba(14, 20, 20, 0.82) !important;
+    /* Deep oceanic charcoal glass */
+    color: #dee4e3 !important;
+    /* Crisp light text for dark mode */
+    border: 1px solid rgba(136, 147, 147, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* Ensures secondary text inside the card flips cleanly */
+  #about.beach-theme .about-card p,
+  #about.beach-theme .about-card .bio-text {
+    color: #bec8c8 !important;
+    /* Light M3 on-surface-variant */
+  }
+}
+
 /* Modern mobile browser fix (handles dynamic URL address bars) */
 @supports (min-height: 100svh) {
   .main-container {
@@ -129,6 +210,35 @@ body::-webkit-scrollbar {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+}
+
+/* ==========================================
+   REPEATABLE ABOUT CARD SCROLL REVEAL
+   ========================================== */
+
+#about .about-card {
+  opacity: 0;
+  transform: translateY(45px);
+  /* Slightly lower start position for extra depth */
+
+  will-change: opacity, transform;
+
+  /* Smooth M3 motion for both entrance and exit reset */
+  transition: opacity 1.6s cubic-bezier(0.2, 0, 0, 1),
+    transform 0.6s cubic-bezier(0.2, 0, 0, 1);
+}
+
+#about .about-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #about .about-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 .section-badge {
@@ -394,28 +504,94 @@ md-tonal-button {
   border: none;
 }
 
-/* --- PILL 1: BRAND LINK --- */
-.nav-brand {
+/* ==========================================
+   HIGH-CONTRAST NAVBAR BRAND PILL (CROSS-FADE TEXT)
+   ========================================== */
+
+/* Outer Link: High-Contrast M3 Primary Pill */
+.m3-nav-pill-swap {
   display: inline-flex;
   align-items: center;
-  padding: 0.625rem 1.25rem;
-  border-radius: 999px;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  border-radius: 100px;
+  /* Full M3 Pill shape */
 
+  /* High contrast filled state using Primary tokens */
   background-color: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
+  border: 1px solid transparent;
 
-  font-family: var(--font-display);
-  font-size: 0.938rem;
-  font-weight: 700;
   text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
 
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* Smooth scale and shadow transition */
+  transition: background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 106, 107, 0.25);
 }
 
-.nav-brand:hover {
+.m3-nav-pill-swap:hover {
+  background-color: var(--md-sys-color-primary);
+  box-shadow: 0 4px 14px rgba(0, 106, 107, 0.4);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.m3-nav-pill-swap:active {
+  transform: translateY(0);
+}
+
+/* Inner Viewport: Contains stacked text for smooth cross-fade */
+.swap-viewport {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.25rem;
+}
+
+.swap-viewport .brand-text {
+  display: block;
+  white-space: nowrap;
+  color: var(--md-sys-color-on-primary) !important;
+  /* Pure opacity transition for soft dissolve effect */
+  transition: opacity 0.3s cubic-bezier(0.2, 0, 0, 1);
+  font-family: var(--font-display);
+}
+
+/* Default state: FullyRealise visible */
+.swap-viewport .default-text {
+  opacity: 1;
+}
+
+/* Hover state initial position: Home stacked directly on top, hidden */
+.swap-viewport .hover-text {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Centers "Home" perfectly over "FullyRealise" */
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ==========================================
+   CROSS-FADE HOVER TRANSITION
+   ========================================== */
+
+/* Fade out FullyRealise */
+.m3-nav-pill-swap:hover .default-text,
+.m3-nav-pill-swap:focus-visible .default-text {
+  opacity: 0;
+}
+
+/* Fade in Home */
+.m3-nav-pill-swap:hover .hover-text,
+.m3-nav-pill-swap:focus-visible .hover-text {
+  opacity: 1;
 }
 
 /* --- PILL 2: NAV LINKS CAPSULE --- */
@@ -437,7 +613,7 @@ md-tonal-button {
 
 /* Individual Links (Google Material 3 Pill Style) */
 .nav-link {
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface-variant);
@@ -716,7 +892,6 @@ md-tonal-button {
 /* Card spanning across both columns on desktop */
 .detail-card.span-two {
   grid-column: span 2;
-  align-items: center;
 }
 
 .card-icon {
@@ -739,6 +914,54 @@ md-tonal-button {
 
 .detail-card li {
   margin: 0.2em;
+}
+
+/* ==========================================
+   SIDE-BY-SIDE TEXT COLUMNS (SPAN-TWO CARDS)
+   ========================================== */
+
+/* Container for side-by-side text blocks */
+.card-columns {
+  display: flex;
+  gap: 1.5rem;
+  /* Space between left and right columns */
+  width: 100%;
+  margin-top: 1rem;
+  text-align: left;
+  /* Keeps column text left-aligned for scannability */
+}
+
+/* Individual column styling */
+.card-columns .column {
+  flex: 1;
+  /* Makes both columns take equal 50% width */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-columns .column h4 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  margin: 0;
+}
+
+.card-columns .column p {
+  font-size: 0.925rem;
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+}
+
+/* Responsive adjustment for Mobile screens */
+@media (max-width: 768px) {
+  .card-columns {
+    flex-direction: column;
+    /* Stacks text columns vertically on mobile */
+    gap: 1rem;
+  }
 }
 
 /* List styling inside the philosophy card */
@@ -826,5 +1049,357 @@ md-tonal-button {
   /* Optionally hide text label on small mobile screens to save space */
   .fab-text {
     display: none;
+  }
+}
+
+/* ==========================================
+   PROJECTS SECTION
+   ========================================== */
+
+#projects {
+  padding: 4rem 2rem;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+.projects-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.section-header {
+  margin-bottom: 2.5rem;
+}
+
+.section-badge {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+  max-width: 600px;
+  margin: 0;
+}
+
+/* Bento Grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* Card Styling */
+.project-card {
+  background-color: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 24px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 0.3s cubic-bezier(0.2, 0, 0, 1),
+    border-color 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* Span Two Column Layout for Featured Card */
+.project-card.span-two {
+  grid-column: span 2;
+  background-color: var(--md-sys-color-surface-container-high);
+}
+
+.project-meta {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.meta-chip {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.meta-chip.active {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.project-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  color: var(--md-sys-color-on-surface);
+}
+
+.project-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0 0 1.5rem 0;
+}
+
+/* Tech Pills */
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tech-pill {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Actions */
+.project-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: auto;
+}
+
+/* Button Variants */
+.m3-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.m3-button-filled {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.m3-button-tonal {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.m3-button:hover {
+  transform: translateY(-1px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card.span-two {
+    grid-column: span 1;
+  }
+}
+
+/* ==========================================
+   FEATURED CARD SIDE-BY-SIDE LAYOUT
+   ========================================== */
+
+/* Grid container inside the featured card */
+.project-card.span-two .card-body {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  /* 60% text, 40% image preview */
+  gap: 2rem;
+  align-items: center;
+  width: 100%;
+}
+
+.project-card.span-two .project-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Image Preview Frame */
+.project-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.preview-frame {
+  width: 100%;
+  max-height: 280px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background-color: var(--md-sys-color-surface-container-lowest);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.preview-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* Subtle zoom effect on card hover */
+.project-card.span-two:hover .preview-frame {
+  transform: scale(1.02);
+}
+
+/* Mobile & Tablet Stacking */
+@media (max-width: 900px) {
+  .project-card.span-two .card-body {
+    grid-template-columns: 1fr;
+    /* Stacks vertically on smaller screens */
+    gap: 1.5rem;
+  }
+
+  .preview-frame {
+    max-height: 220px;
+  }
+}
+
+/* ==========================================
+   FAIL-SAFE M3 HERO GLITCH EFFECT
+   ========================================== */
+
+.glitch-container {
+  position: relative;
+  display: inline-block;
+  min-height: 1.2em;
+  /* Prevents layout collapse while switching */
+}
+
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-display, 'Google Sans Flex', sans-serif);
+  color: var(--md-sys-color-on-surface);
+  opacity: 1;
+  /* Default to visible so it NEVER disappears permanently */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Active Glitch State */
+.glitch-text.is-glitching {
+  animation: m3-entry 0.4s var(--md-sys-motion-easing-emphasized-decelerate, cubic-bezier(0.05, 0.7, 0.1, 1)) forwards;
+}
+
+/* Glitch Pseudo-Layers (Red/Cyan Split) */
+.glitch-text.is-glitching::before,
+.glitch-text.is-glitching::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+  display: block;
+  pointer-events: none;
+}
+
+/* Cyan Layer */
+.glitch-text.is-glitching::before {
+  left: 2px;
+  text-shadow: -2px 0 #00fff9;
+  animation: glitch-anim-1 0.25s infinite linear alternate-reverse;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+}
+
+/* Magenta Layer */
+.glitch-text.is-glitching::after {
+  left: -2px;
+  text-shadow: 2px 0 #ff00c1;
+  animation: glitch-anim-2 0.25s infinite linear alternate-reverse 0.05s;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+}
+
+/* Keyframes */
+@keyframes glitch-anim-1 {
+  0% {
+    transform: translate(0);
+  }
+
+  20% {
+    transform: translate(-3px, 1px);
+  }
+
+  40% {
+    transform: translate(-1px, -2px);
+  }
+
+  60% {
+    transform: translate(2px, 1px);
+  }
+
+  80% {
+    transform: translate(1px, -1px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    transform: translate(0);
+  }
+
+  20% {
+    transform: translate(2px, -1px);
+  }
+
+  40% {
+    transform: translate(1px, 2px);
+  }
+
+  60% {
+    transform: translate(-2px, -1px);
+  }
+
+  80% {
+    transform: translate(-1px, 1px);
+  }
+
+  100% {
+    transform: translate(0);
   }
 }

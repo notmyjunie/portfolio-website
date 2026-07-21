@@ -102,3 +102,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fabObserver.observe(deepDiveSection);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const aboutCard = document.querySelector('#about .about-card');
+  const homeSection = document.querySelector('#home');
+
+  if (!aboutCard || !homeSection) return;
+
+  // 1. Observer for the About Card entrance
+  const aboutObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      // Trigger entrance animation when scrolling down into #about
+      if (entry.isIntersecting) {
+        aboutCard.classList.add('is-visible');
+      }
+    });
+  }, {
+    threshold: 0.25 // Triggers when 25% of the card is visible
+  });
+
+  aboutObserver.observe(aboutCard);
+
+  // 2. Observer for returning to #home
+  const homeObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      // Reset card state when Home section is predominantly back in view
+      if (entry.isIntersecting) {
+        aboutCard.classList.remove('is-visible');
+      }
+    });
+  }, {
+    threshold: 0.6 // Resets when Home takes up 60%+ of the screen
+  });
+
+  homeObserver.observe(homeSection);
+});
+
+// src/main.js
+
+document.addEventListener('DOMContentLoaded', () => {
+  const glitchEl = document.getElementById('glitch-el');
+
+  // REPLACE THIS WITH YOUR REAL NAME OR DISPLAY NAME
+  const finalName = "Ashraf Danial";
+  const introText = "A Dream";
+
+  if (!glitchEl) return;
+
+  // 1. Set initial text immediately
+  glitchEl.textContent = introText;
+  glitchEl.setAttribute('data-text', introText);
+
+  // 2. Trigger Glitch Chaos & Swap to Final Name (after 1 second)
+  setTimeout(() => {
+    glitchEl.classList.add('is-glitching');
+    glitchEl.textContent = finalName;
+    glitchEl.setAttribute('data-text', finalName);
+  }, 1000);
+
+  // 3. Resolve Glitch (Stop chaos, restore clean typography)
+  setTimeout(() => {
+    glitchEl.classList.remove('is-glitching');
+  }, 1800);
+});

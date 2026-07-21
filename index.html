@@ -4,51 +4,176 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio | M3 Expressive</title>
+  <title>AD | FullyRealised</title>
 </head>
 
 <body>
   <header class="m3-nav-bar">
-    <div class="m3-nav-content">
+    <!-- Pill 1: Brand / Logo -->
+    <a href="#home" class="nav-brand">FullyRealised</a>
 
-      <!-- Brand / Name -->
-      <a href="#" class="nav-brand">Cathartic Evenings</a>
-
-      <!-- Nav Links -->
-      <nav class="nav-links">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#projects" class="nav-link">Projects</a>
-        <a href="#contact" class="nav-link">Contact</a>
-      </nav>
-
-      <!-- Action Button -->
-      <md-filled-button class="nav-cta">
-        Resume
-      </md-filled-button>
-
-    </div>
+    <!-- Pill 2: Nav Links -->
+    <nav class="nav-links">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
   </header>
-  <main class="main-container"
+  <main class="main-container" id="home"
     style="background-color: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface); min-height: 100vh; padding: 2rem;">
 
     <!-- Display Title -->
-    <p class="lead">Hi, I'm</p>
-    <h2>Ashraf Danial</h2>
-    <h1 style="font-family: var(--font-display); font-size: 3.5rem; margin-top: 1rem;">
-      UI/UX Designer & Systems Administrator
-    </h1>
+    <h1>Ashraf Danial</h1>
+    <ul>
+      <li>
+        <h2>Java and Web Developer</h2>
+      </li>
+      <li>
+        <h2>UX Designer</h2>
+      </li>
+      <li>
+        <h2>Photo Hobbyist</h2>
+      </li>
+    </ul>
 
-
-    <p>I am an undergraduate student for Universiti Malaysia Pahang Al-Sultan Abdullah. Recently having completed all my
-      Diploma in Computer Science on-campus courses, I am currently looking for an internship spot within the August
-      2026 intake in Kuala Lumpur.</p>
+    <p class="lead">Undergraduate Computer Science student for Universiti Malaysia Pahang Al-Sultan Abdullah. Looking to
+      do an internship starting from August 2026 until January 2027.</p>
     <!-- M3 Web Button -->
-    <md-filled-button style="--md-filled-button-container-color: var(--md-sys-color-primary);">
-      Explore Work
-    </md-filled-button>
   </main>
+  <!-- ==========================================
+     ABOUT SECTION
+     ========================================== -->
+  <section id="about" class="section-container">
+    <div class="about-card">
+      <span class="section-badge">About Me</span>
 
+      <h2>Building functional systems & intuitive digital experiences</h2>
 
+      <p class="about-body">
+        I’m a Computer Science undergraduate at Universiti Malaysia Pahang Al-Sultan Abdullah based in <strong>Kuala
+          Lumpur</strong> with
+        a passion for
+        software craftsmanship. My focus lies at the intersection of robust backend logic with <strong>Java</strong> and
+        clean, user-centered design across <strong>Web and UX</strong> platforms.
+      </p>
+
+      <p class="about-body">
+        Whether I'm engineering modular application logic or prototyping responsive interfaces, I focus on performance,
+        clarity, and maintainability.
+      </p>
+
+      <!-- Key Focus Areas / Tech Stack Chips -->
+      <div class="tech-highlights">
+        <h3>Primary Focus</h3>
+        <div class="chip-group">
+          <span class="m3-chip">Java Development</span>
+          <span class="m3-chip">Web Development</span>
+          <span class="m3-chip">UI/UX Design</span>
+        </div>
+        <h3>Programming Languages</h3>
+        <div class="chip-group">
+          <span class="m3-chip">ASP.NET</span>
+          <span class="m3-chip">C#</span>
+          <span class="m3-chip">CSS</span>
+          <span class="m3-chip">HTML</span>
+          <span class="m3-chip">Java</span>
+          <span class="m3-chip">Javascript</span>
+          <span class="m3-chip">Lua</span>
+          <span class="m3-chip">Python</span>
+        </div>
+        <h3>Development Tools</h3>
+        <div class="chip-group">
+          <span class="m3-chip">Linux CLI</span>
+          <span class="m3-chip">MariaDB</span>
+          <span class="m3-chip">MongoDB</span>
+          <span class="m3-chip">MySQL</span>
+          <span class="m3-chip">Microsoft Visual Studio 2026</span>
+          <span class="m3-chip">Visual Studio Code</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ==========================================
+     DEEP DIVE / DETAILS SECTION
+     ========================================== -->
+  <section id="about-details" class="section-container">
+    <div class="details-wrapper">
+
+      <!-- Section Header -->
+      <div class="details-header">
+        <span class="section-badge">Deep Dive</span>
+        <h2>Background & Technical Capabilities</h2>
+      </div>
+
+      <!-- Multi-Column Grid Layout -->
+      <div class="details-grid">
+
+        <!-- Card 1: Experience / Education -->
+        <div class="detail-card highlight-card">
+          <div class="card-icon">🎓</div>
+          <h3>Education & Journey</h3>
+          <h4>Diploma in Computer Science (2024-Present)</h4>
+          <p>
+            Currently pursuing a Diploma in Computer Science at Universiti Malaysia Pahang Al-Sultan Abdullah
+            (UMPSA). My academic focus centers on software engineering fundamentals, database systems, and
+            object-oriented architecture. Boldly rooted with a current <strong>CGPA of 3.40</strong>.
+          </p>
+          <h4>Sijil Pelajaran Malaysia (2019-2023)</h4>
+          <p>Completed my SPM studies at my hometown's Sekolah Menengah Kebangsaan Chukai. Alongside academic studies, I
+            have also partaken multiple extracurricular activities related to the field I took back then which was
+            Computer Science. Graduated with <strong>7A 1B 1C</strong>.</p>
+        </div>
+
+        <!-- Card 2: Core Engineering Focus -->
+        <div class="detail-card">
+          <div class="card-icon">⚡</div>
+          <h3>Proficiencies</h3>
+          <p>
+            Proficient in <strong>Java</strong> application structure, algorithm design, and structured data handling.
+            Experienced in designing modular software workflows and state management.
+          </p>
+          <p>Among all else, I've taken and completed these courses during my time in university of which are:</p>
+          <ul>
+            <li>Data Structure and Algorithms</li>
+            <li>Object Oriented Design and Implementation</li>
+            <li>Database System</li>
+            <li>Software Engineering</li>
+            <li>Web Application Development</li>
+            <li>Mobile Application Development</li>
+            <li>Data Communication and Networking</li>
+            <li>Information Security</li>
+            <li>Fundamentals of Multimedia</li>
+            <li>Graphical User Interface</li>
+            <li>Human-Computer Interaction</li>
+        </div>
+
+        <!-- Card 3: Frontend & Design -->
+        <div class="detail-card">
+          <div class="card-icon">📱</div>
+          <h3>Language Proficiency</h3>
+          <p>
+            Building clean user interfaces across web frameworks and native Android development, maintaining a balance
+            between aesthetic appeal and accessible UX principles.
+          </p>
+        </div>
+
+        <!-- Card 4: Methodologies / Principles -->
+        <div class="detail-card span-two">
+          <div class="card-icon">🛠️</div>
+          <h3>Development Philosophy</h3>
+          <ul class="philosophy-list">
+            <li><strong>Clean Architecture:</strong> Prioritizing readable, maintainable, and modular code structures.
+            </li>
+            <li><strong>User-Centric Design:</strong> Ensuring smooth layout flows, clear accessibility, and consistent
+              design languages.</li>
+            <li><strong>Continuous Iteration:</strong> Refining systems through continuous testing, profiling, and
+              performance tuning.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
   <script type="module" src="/src/main.js"></script>
 </body>
 

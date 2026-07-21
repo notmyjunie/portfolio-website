@@ -77,3 +77,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const fab = document.getElementById('fab-contact');
+  const deepDiveSection = document.getElementById('about-details');
+
+  if (!fab || !deepDiveSection) return;
+
+  const observerOptions = {
+    root: null,
+    threshold: 0.1 /* Triggers when 10% of #about-details is visible */
+  };
+
+  const fabObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      // If user reaches #about-details or scrolls past it
+      if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
+        fab.classList.add('is-visible');
+      } else {
+        fab.classList.remove('is-visible');
+      }
+    });
+  }, observerOptions);
+
+  fabObserver.observe(deepDiveSection);
+});

@@ -322,6 +322,54 @@ md-tonal-button {
 }
 
 /* ==========================================
+   MATERIAL DESIGN 3 BUTTONS
+   ========================================== */
+.m3-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 100px;
+  /* M3 Full shape for buttons */
+  font-size: 0.938rem;
+  font-weight: 600;
+  text-decoration: none;
+  width: fit-content;
+
+  /* Smooth transition for elevation and color */
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+    background-color 0.2s ease;
+}
+
+/* Filled Button Variant */
+.m3-button-filled {
+  background-color: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #ffffff);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.m3-button-filled:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.m3-button-filled:active {
+  transform: translateY(0);
+}
+
+/* Down arrow icon styling */
+.btn-icon {
+  transition: transform 0.2s ease;
+}
+
+.m3-button:hover .btn-icon {
+  transform: translateY(2px);
+  /* Subtle downward nudge on hover */
+}
+
+/* ==========================================
    DUAL-PILL FLOATING HEADER CONTAINER
    ========================================== */
 .m3-nav-bar {
@@ -668,6 +716,7 @@ md-tonal-button {
 /* Card spanning across both columns on desktop */
 .detail-card.span-two {
   grid-column: span 2;
+  align-items: center;
 }
 
 .card-icon {
@@ -713,5 +762,69 @@ md-tonal-button {
 
   .detail-card.span-two {
     grid-column: span 1;
+  }
+}
+
+/* ==========================================
+   FLOATING ACTION BUTTON (FAB)
+   ========================================== */
+.m3-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 990;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+  /* M3 Medium shape for FABs */
+
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  /* Hidden & shifted down by default */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.2, 0, 0, 1), visibility 0.3s;
+}
+
+/* Active class toggled by JavaScript */
+.m3-fab.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.m3-fab:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+.m3-fab:active {
+  transform: translateY(0);
+}
+
+/* Mobile Adjustment: Prevent overlap with bottom navigation bar */
+@media (max-width: 600px) {
+  .m3-fab {
+    bottom: 5.25rem;
+    /* Sits right above mobile bottom nav */
+    right: 1.25rem;
+    padding: 0.875rem 1rem;
+  }
+
+  /* Optionally hide text label on small mobile screens to save space */
+  .fab-text {
+    display: none;
   }
 }

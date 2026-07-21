@@ -1,0 +1,236 @@
+/* ==========================================
+   1. GLOBAL RESET & BASE BODY
+   ========================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  /* Default body font family */
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.main-container {
+  /* Restrict max width and center horizontally */
+  max-width: 1000px;
+  /* Adjust between 800px - 1200px based on preference */
+  margin: 0 auto;
+
+  /* Vertical and horizontal breathing room */
+  padding: 4rem 2rem;
+
+  /* Stack content vertically */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Keeps text/buttons left-aligned within the centered container */
+}
+
+/* ==========================================
+   2. DISPLAY & HEADINGS (Google Sans Flex)
+   ========================================== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.display-large,
+.display-medium,
+.display-small {
+  font-family: var(--font-display);
+  color: var(--md-sys-color-on-surface);
+  letter-spacing: -0.02em;
+}
+
+h1,
+.display-large {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  /* Extra Bold for M3 Expressive Hero */
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+
+h2,
+.display-medium {
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h3,
+.display-small {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+
+/* ==========================================
+   3. BODY PARAGRAPHS & LISTS (Inter)
+   ========================================== */
+p,
+blockquote,
+li {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface-variant);
+  max-width: 62ch;
+  /* Keeps paragraph text readable */
+  margin-bottom: 1.25rem;
+}
+
+/* Prominent lead paragraph for Hero section */
+p.lead {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+p:not(:last-child) {
+  margin-bottom: 1.25rem;
+}
+
+/* Safe span selector without max-width limits */
+span {
+  font-family: var(--font-body);
+  color: inherit;
+}
+
+/* ==========================================
+   4. INTERACTIVE, BUTTONS & CHIPS (Auto-Fit Content)
+   ========================================== */
+
+/* Custom Badge / Pill Utility */
+.badge,
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: max-content;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+  white-space: nowrap;
+}
+
+/* ==========================================
+   5. GOOGLE MATERIAL WEB COMPONENTS SIZING & FONTS
+   ========================================== */
+md-filled-button,
+md-outlined-button,
+md-text-button,
+md-elevated-button,
+md-tonal-button {
+  /* Enforce horizontal side padding tokens */
+  --md-filled-button-leading-space: 24px !important;
+  --md-filled-button-trailing-space: 24px !important;
+  --md-outlined-button-leading-space: 24px !important;
+  --md-outlined-button-trailing-space: 24px !important;
+  --md-elevated-button-leading-space: 24px !important;
+  --md-elevated-button-trailing-space: 24px !important;
+  --md-tonal-button-leading-space: 24px !important;
+  --md-tonal-button-trailing-space: 24px !important;
+
+  /* Layout & typography fixes */
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  white-space: nowrap !important;
+
+  font-family: var(--font-body) !important;
+}
+
+/* ==========================================
+   6. STICKY TOP BAR NAV
+   ========================================== */
+.m3-nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+
+  /* Semi-transparent surface with glassmorphic blur */
+  background-color: rgb(from var(--md-sys-color-surface) r g b / 80%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Expressive subtle bottom border */
+  border-bottom: 1px solid var(--md-sys-color-surface-container-high);
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Inner Layout Alignment */
+.m3-nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Brand Logo / Name */
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+/* Nav Links Group */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Individual Links (M3 Pill Hover Effect) */
+.nav-link {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Hide navigation links on small screens */
+@media (max-width: 640px) {
+  .nav-links {
+    display: none;
+  }
+}

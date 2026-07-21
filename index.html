@@ -5,32 +5,49 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio | M3 Expressive</title>
-  <!-- Dynamic Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
-    rel="stylesheet">
 </head>
 
 <body>
-  <main id="app"
+  <header class="m3-nav-bar">
+    <div class="m3-nav-content">
+
+      <!-- Brand / Name -->
+      <a href="#" class="nav-brand">Cathartic Evenings</a>
+
+      <!-- Nav Links -->
+      <nav class="nav-links">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <!-- Action Button -->
+      <md-filled-button class="nav-cta">
+        Resume
+      </md-filled-button>
+
+    </div>
+  </header>
+  <main class="main-container"
     style="background-color: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface); min-height: 100vh; padding: 2rem;">
 
-    <!-- Expressive Hero Badge -->
-    <span
-      style="background: var(--md-sys-color-tertiary-container); color: var(--md-sys-color-on-tertiary-container); padding: 0.5rem 1rem; border-radius: 999px; font-weight: 600; font-size: 0.875rem;">
-      Available for Hire
-    </span>
-
     <!-- Display Title -->
-    <h1 style="font-family: var(--font-display); font-size: 3.5rem; font-weight: 800; margin-top: 1rem;">
-      Creative Developer & Designer
+    <p class="lead">Hi, I'm</p>
+    <h2>Ashraf Danial</h2>
+    <h1 style="font-family: var(--font-display); font-size: 3.5rem; margin-top: 1rem;">
+      UI/UX Designer & Systems Administrator
     </h1>
 
+
+    <p>I am an undergraduate student for Universiti Malaysia Pahang Al-Sultan Abdullah. Recently having completed all my
+      Diploma in Computer Science on-campus courses, I am currently looking for an internship spot within the August
+      2026 intake in Kuala Lumpur.</p>
     <!-- M3 Web Button -->
     <md-filled-button style="--md-filled-button-container-color: var(--md-sys-color-primary);">
       Explore Work
     </md-filled-button>
   </main>
+
 
   <script type="module" src="/src/main.js"></script>
 </body>

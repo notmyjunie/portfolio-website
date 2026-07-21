@@ -363,6 +363,10 @@ span {
     display: none;
   }
 
+  .nav-home-pill .nav-icon {
+    display: inline-block;
+  }
+
   .nav-link.active .nav-icon {
     display: inline-block;
     font-variation-settings: 'FILL' 1;

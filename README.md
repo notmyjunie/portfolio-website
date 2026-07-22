@@ -36,4 +36,4 @@ You only need a modern web browser to view the project locally, or [Node.js](htt
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/notmyjunie/portfolio-website.git](https://github.com/notmyjunie/portfolio-website.git)
+   git clone https://github.com/notmyjunie/portfolio-website.git

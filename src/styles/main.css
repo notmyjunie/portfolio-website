@@ -243,10 +243,15 @@ span {
 /* --- GLASS CAPSULES (Shared styling for Pill 1 and Pill 2) --- */
 .nav-home-pill,
 .nav-links {
-  background-color: rgb(from var(--md-sys-color-surface-container-high) r g b / 75%);
-  backdrop-filter: blur(16px);
+  background-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 30%, transparent);
+
+  transform: translateZ(0);
+  will-change: transform, backdrop-filter;
+
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgb(from var(--md-sys-color-outline-variant) r g b / 30%);
+  backdrop-filter: blur(16px);
+
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
@@ -315,11 +320,16 @@ span {
 /* Dark mode nav overides */
 @media (prefers-color-scheme: dark) {
   .nav-links {
-    background-color: rgba(33, 31, 38, 0.6) !important;
+    background-color: color-mix(in srgb, #211f26 60%, transparent) !important;
+
+    border: 1px solid color-mix(in srgb, #ffffff 12%, transparent);
+
+    box-shadow: 0 8px 32px color-mix(in srgb, #000000 40%, transparent);
+
+    transform: translateZ(0);
+    will-change: transform, backdrop-filter;
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
 }
 
@@ -1153,6 +1163,16 @@ body.dark-mode .focus-capsule {
    ========================================== */
 
 /* Base pill structure reset for dynamic color transitions */
+
+.secondary-pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
 .m3-pill-link {
   display: inline-flex;
   align-items: center;
@@ -1273,6 +1293,17 @@ body.dark-mode .focus-capsule {
   }
 
   .m3-button-filled {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .secondary-pills {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.95rem;
+  }
+
+  .m3-pill-link {
     justify-content: center;
     width: 100%;
   }

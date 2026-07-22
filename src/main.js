@@ -80,16 +80,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const fab = document.getElementById('fab-contact');
   const deepDiveSection = document.getElementById('about-details');
   const contactSection = document.getElementById('contact');
+  const footerSection = document.getElementById('footer');
 
   if (!fab || !deepDiveSection) return;
 
   let isPastDeepDive = false;
   let isInContact = false;
+  let isInFooter = false;
 
   // Helper function to update FAB visibility
   const updateFabVisibility = () => {
     // Show only if we are past #about-details AND NOT inside #contact
-    if (isPastDeepDive && !isInContact) {
+    if (isPastDeepDive && !isInContact && !isInFooter) {
       fab.classList.add('is-visible');
     } else {
       fab.classList.remove('is-visible');
@@ -116,6 +118,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { root: null, threshold: 0.1 });
 
     contactObserver.observe(contactSection);
+  }
+
+  if (footerSection) {
+    const footerObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isInFooter = entry.isIntersecting;
+        updateFabVisibility();
+
+      });
+    }, { root: null, threshold: 0.1 });
+    footerObserver.observe(footerSection);
   }
 });
 document.addEventListener('DOMContentLoaded', () => {

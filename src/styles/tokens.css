@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,100..900;1,100..900&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
 
 :root {
   /* ==========================================
@@ -31,11 +31,11 @@
 
   /* Typography */
   --font-display: 'Google Sans Flex', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-body: 'Geist', sans-serif;
   --font-weight-body: 400;
 
   --md-ref-typeface-brand: 'Google Sans Flex', sans-serif;
-  --md-ref-typeface-plain: 'Inter', sans-serif;
+  --md-ref-typeface-plain: 'Geist', sans-serif;
 
   --md-sys-typescale-label-large-font: var(--font-body, sans-serif);
   --md-sys-typescale-body-large-font: var(--font-body, sans-serif);
